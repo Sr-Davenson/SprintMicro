@@ -4,67 +4,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personas</title>
-    <link rel="stylesheet" href="css/personas.css">
+    <title>Sprint</title>
+    <link rel="stylesheet" href="FrontEnd/CSS/styleSprint.css">
 </head>
 
 <body>
     <section>
-        <div id="sprintForm" class="ocultarForm">
+        <div id="sprintFormContent" class="ocultarForm">
             <form name="sprintForm">
-                <label for="nombre">Nombre Sprint</label>
-                <input type="text" name="nombre" id="nombre">
-                <br>
-                <label for="nombre">Fecha Inicio</label>
-                <input type="text" name="nombre" id="nombre">
-                <button type="submit">Crear</button>
-            </form>
-            <a href="index.html">Volver</a>
-            <form name="personaForm">
                 <header>
                     <h2 id="tituloForm"></h2>
                 </header>
-                <div>
-                    <label for="">Id</label>
-                    <input type="number" name="idInput">
-                </div>
-                <div>
-                    <label for="">Nombre</label>
-                    <input type="text" name="nombreInput">
-                </div>
-                <div>
-                    <label for="">Email</label>
-                    <input type="email" name="emailInput">
-                </div>
-                <div>
-                    <label for="">Edad</label>
-                    <input type="number" name="edadInput">
-                </div>
+                <label for="nombreSprint">Nombre Sprint</label>
+                <input type="text" name="nombre" id="nombre">
+                <br>
+                <label for="fechaIni">Fecha Inicio</label>
+                <input type="date" name="fechaIni" id="fechaIni">
+                <br>
+                <label for="fechaFin">Fecha Fin</label>
+                <input type="date" name="fechaFin" id="fechaFin">
+                <br>
+                <label for="created_at">created_at</label>
+                <input type="datetime-local" name="created_at" id="created_at">
+                <br>
+                <label for="updated_at">updated_at</label>
+                <input type="datetime-local" name="updated_at" id="updated_at">
                 <div>
                     <button type="submit">Guardar</button>
                     <button type="reset" id="cancelarBtn">Cancelar</button>
                 </div>
             </form>
-        </div>
+            <a href="index.html">Volver</a>
         <div>
-            <table id="personasTable">
+            <table id="sprintTable">
                 <thead>
                     <tr>
-                        <td colspan="4">
+                        <td colspan="6">
                             <button id="registrarBtn">Registrar</button>
                         </td>
                     </tr>
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Edad</th>
+                        <th>Nombre Sprint</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>created_at</th>
+                        <th>updated_at</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="4">No hay datos</td>
+                        <td colspan="6">No hay datos</td>
                     </tr>
                 </tbody>
             </table>

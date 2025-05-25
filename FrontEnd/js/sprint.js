@@ -1,15 +1,15 @@
-const table = document.getElementById('personasTable');
-const form = document.forms['personaForm'];
+const table = document.getElementById('sprintTable');
+const form = document.forms['sprintForm'];
 const tituloForm = document.getElementById('tituloForm');
 const registrarBtn = document.getElementById('registrarBtn');
-const formContent = document.getElementById('personaFormContent');
+const formContent = document.getElementById('sprintFormContent');
 const cancelarBtn = document.getElementById('cancelarBtn');
 let operacion = '';
 
 class Servicios {
     static async getAllPersons() {
         try {
-            const resp = await fetch('http://127.0.0.1:8000/api/personas');
+            const resp = await fetch('http://127.0.0.1:8000/api/retro_items');
             const bodyResp = await resp.json();
             return bodyResp.data;
         } catch (error) {
