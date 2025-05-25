@@ -4,20 +4,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Personas</title>
+    <link rel="stylesheet" href="css/personas.css">
 </head>
 
 <body>
-    <button type="submit">Crear sprint</button>
-    <form action="" method="get">
-        <label for="nombre">Nombre Sprint</label>
-        <input type="text" name="nombre" id="nombre">
-        <br>
-        <label for="nombre">Fecha Inicio</label>
-        <input type="text" name="nombre" id="nombre">
-        <button type="submit">Crear</button>
-    </form>
-    <a href="index.html">Volver</a>
+    <section>
+        <div id="sprintForm" class="ocultarForm">
+            <form name="sprintForm">
+                <label for="nombre">Nombre Sprint</label>
+                <input type="text" name="nombre" id="nombre">
+                <br>
+                <label for="nombre">Fecha Inicio</label>
+                <input type="text" name="nombre" id="nombre">
+                <button type="submit">Crear</button>
+            </form>
+            <a href="index.html">Volver</a>
+            <form name="personaForm">
+                <header>
+                    <h2 id="tituloForm"></h2>
+                </header>
+                <div>
+                    <label for="">Id</label>
+                    <input type="number" name="idInput">
+                </div>
+                <div>
+                    <label for="">Nombre</label>
+                    <input type="text" name="nombreInput">
+                </div>
+                <div>
+                    <label for="">Email</label>
+                    <input type="email" name="emailInput">
+                </div>
+                <div>
+                    <label for="">Edad</label>
+                    <input type="number" name="edadInput">
+                </div>
+                <div>
+                    <button type="submit">Guardar</button>
+                    <button type="reset" id="cancelarBtn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+        <div>
+            <table id="personasTable">
+                <thead>
+                    <tr>
+                        <td colspan="4">
+                            <button id="registrarBtn">Registrar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Edad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4">No hay datos</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script src="FrontEnd/js/sprint.js"></script>
+
 </body>
 
 </html>
