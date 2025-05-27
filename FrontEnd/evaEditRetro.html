@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación y Edición de Retrospectiva</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Evaluación y Edición de Retrospectiva</h1>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="historial-retrospectivas.html">Historial</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Evaluación de compromisos -->
+        <section class="evaluacion">
+            <h2>Evaluación de Compromisos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Acción</th>
+                        <th>Descripción</th>
+                        <th>Cumplido</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-compromisos">
+                    <!-- Aquí se cargarán los compromisos dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Edición de retrospectiva -->
+        <section class="edicion">
+            <h2>Editar Retrospectiva</h2>
+            <form id="form-edicion">
+                <div>
+                    <label for="sprint">Sprint Número:</label>
+                    <input type="number" id="sprint" name="sprint" required>
+                </div>
+
+                <div>
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+
+                <div>
+                    <label for="aspectos-positivos">Aspectos Positivos:</label>
+                    <textarea id="aspectos-positivos" name="aspectos-positivos" rows="4" required></textarea>
+                </div>
+
+                <div>
+                    <label for="aspectos-negativos">Aspectos Negativos:</label>
+                    <textarea id="aspectos-negativos" name="aspectos-negativos" rows="4" required></textarea>
+                </div>
+
+                <div>
+                    <label for="acciones">Acciones para Mejorar:</label>
+                    <textarea id="acciones" name="acciones" rows="4" required></textarea>
+                </div>
+
+                <button type="submit">Guardar Cambios</button>
+            </form>
+        </section>
+    </main>
+    <script src="script.js"></script>
+    <!-- ¿Se deja el main o se le cambia mejor por section? -->
+</body>
+</html>

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/adminRetro.css">
+    <title>Registro de Retrospectivas</title>
 </head>
 <body>
     <div class="container">
@@ -39,18 +38,16 @@
     </p>
     
     <section class="container">
-        <h1>
-            <h1>Fechas Activadas</h1>
-        </h1>
-        <br>
+        <h1>Fechas Activadas</h1>
         <form class="form" action="" method="post">
-            <div>
+            <div class="form-group">
                 <label for="fechaIni">Fecha Inicio:</label>
                 <input type="date" id="fechaIni" name="fechaIni" required>
+                
                 <label for="fechaFin">Fecha Fin:</label>
                 <input type="date" id="fechaFin" name="fechaFin" required>
             </div>
-            <button type="submit">Buscar</button>
+            <button type="submit" aria-label="Buscar retrospectivas">Buscar</button>
         </form>
         <table class="table">
             <h1>Historial de Restrospectivas</h1>
