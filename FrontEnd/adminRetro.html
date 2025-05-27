@@ -4,8 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/adminRetro.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Crear Nueva Retrospectiva</h1>
+        <form id="retrospectivaForm">
+            <div class="form-group">
+                <label for="sprint">Sprint:</label>
+                <input type="text" id="sprint" required>
+            </div>
+
+            <div class="form-group">
+                <label for="positivo">Aspectos Positivos:</label>
+                <input type="text" id="positivo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="negativo">Aspectos Negativos:</label>
+                <input type="text" id="negativo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="accion">Acciones a Tomar:</label>
+                <input type="text" id="accion" required>
+            </div>
+
+            <button type="submit">Guardar Retrospectiva</button>
+        </form>
+        <div id="listaRetrospectivas"></div>
+    </div>
+
+    <p>
+    </p>
+    
     <section class="container">
         <h1>
             <h1>Fechas Activadas</h1>
@@ -20,7 +52,7 @@
             </div>
             <button type="submit">Buscar</button>
         </form>
-        <table>
+        <table class="table">
             <h1>Historial de Restrospectivas</h1>
             <thead>
                 <tr>
@@ -36,5 +68,6 @@
         </table>
         <a href="index.html">Volver</a>
     </section>
+    <script src="js/retro.js"></script>
 </body>
 </html>
