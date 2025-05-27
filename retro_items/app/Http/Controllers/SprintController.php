@@ -48,7 +48,7 @@ class SprintController extends Controller
     {
         $data = $request->all();
         $sprint = Sprint::find($id);
-        if (empty($retro)) {
+        if (empty($sprint)) {
             return response()->json(['data' => 'No hay informacion sobre el sprint'], 404);
         }
         $sprint->nombre = $data['nombre'];
@@ -56,7 +56,7 @@ class SprintController extends Controller
         $sprint->fecha_fin = $data['fecha_fin'];
         $sprint->created_at = $data['created_at'];
         $sprint->updated_at = $data['updated_at'];
-        $retro->save();
+        $sprint->save();
         return response()->json(["data" => "Sprint actualizada"], 200);
     }
 
