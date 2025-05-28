@@ -135,6 +135,33 @@ const generarFila = (item) => {
     const tdBotones = document.createElement("td");
     tdBotones.appendChild(modificarBtn);
     tdBotones.appendChild(eliminarBtn);
+    
+if (item.categoria === "accion" && !item.cumplida) {
+    const evaluarBtn = document.createElement("button");
+    evaluarBtn.textContent = "Evaluar";
+
+    evaluarBtn.addEventListener("click", async () => {
+        const confirmar = confirm("¿La acción fue cumplida?\n\nAceptar = Sí\nCancelar = No, pasar al siguiente sprint");
+        if (confirmar) {
+            item.cumplida = true;
+            const res = await RetroServicios.updateRetro(item.id, item);
+            if (res) cargarTabla();
+        } else {
+            const sprintIds = Object.keys(sprintsMap).map(Number).sort((a, b) => a - b);
+            const index = sprintIds.indexOf(Number(item.sprint_id));
+            if (index !== -1 && index + 1 < sprintIds.length) {
+                item.sprint_id = sprintIds[index + 1];
+                const res = await RetroServicios.updateRetro(item.id, item);
+                if (res) cargarTabla();
+            } else {
+                alert("No hay un siguiente sprint disponible para mover esta acción.");
+            }
+        }
+    });
+
+    tdBotones.appendChild(evaluarBtn);
+}
+
 
     const tr = document.createElement("tr");
     tr.appendChild(tdId);
@@ -150,13 +177,24 @@ const generarFila = (item) => {
     return tr;
 };
 
-
 const registrarRetro = async () => {
+    let sprintId = sprintSelect.value;
+    const categoria = categoriaSelect.value;
+    const cumplida = form['cumplida'].checked;
+
+    if (categoria === "accion" && !cumplida) {
+        const sprintIds = Object.keys(sprintsMap).map(Number).sort((a, b) => a - b);
+        const index = sprintIds.indexOf(Number(sprintId));
+        if (index !== -1 && index + 1 < sprintIds.length) {
+            sprintId = sprintIds[index + 1];  
+        }
+    }
+
     const retro = {
-        sprint_id: sprintSelect.value,
-        categoria: categoriaSelect.value,
+        sprint_id: sprintId,
+        categoria,
         descripcion: form['descripcion'].value,
-        cumplida: form['cumplida'].checked,
+        cumplida,
         fecha_revision: form['fecha_revision'].value,
         created_at: form['created'].value,
         updated_at: form['updated'].value
@@ -165,6 +203,7 @@ const registrarRetro = async () => {
     const res = await RetroServicios.saveNewRetro(retro);
     if (res) cargarTabla();
 };
+
 
 const modificarRetro = async () => {
     const retro = {
