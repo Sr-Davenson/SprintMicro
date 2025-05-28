@@ -124,6 +124,8 @@ const generarFila = (item) => {
         form['fecha_revision'].value = item.fecha_revision;
         form['created'].value = item.created_at.slice(0, 16);
         form['updated'].value = item.updated_at.slice(0, 16);
+
+        manejarCambioCategoria();
     });
 
     const eliminarBtn = document.createElement("button");
@@ -191,7 +193,7 @@ const cargarSprints = async () => {
         const json = await resp.json();
 
         const sprints = json.data;
-        sprintSelect.innerHTML = '<option value="">-- Selecciona un sprint --</option>';
+        sprintSelect.innerHTML = '<option value="">Selecciona un sprint</option>';
         sprints.forEach(sprint => {
             const option = document.createElement('option');
             option.value = sprint.id;
@@ -208,7 +210,7 @@ const cargarSprints = async () => {
 
 const cargarCategorias = () => {
     const categorias = ["accion", "logro", "impedimento", "comentario", "otro"];
-    categoriaSelect.innerHTML = '<option value="">-- Elige una categoría --</option>';
+    categoriaSelect.innerHTML = '<option value="">Elige una categoría</option>';
     categorias.forEach(cat => {
         const option = document.createElement('option');
         option.value = cat;
@@ -219,12 +221,25 @@ const cargarCategorias = () => {
 
 
 
+const manejarCambioCategoria = () => {
+    if (categoriaSelect.value !== "accion") {
+        form['cumplida'].checked = false;       
+        form['cumplida'].disabled = true;        
+    } else {
+        form['cumplida'].disabled = false;     
+    }
+};
+
+categoriaSelect.addEventListener('change', manejarCambioCategoria);
+
 registrarBtn.addEventListener("click", () => {
     operacion = "crear";
     tituloForm.textContent = "Registrar Retrospectiva";
     form.reset();
     formContent.classList.remove("ocultarForm");
+    manejarCambioCategoria();
 });
+
 
 cancelarBtn.addEventListener("click", () => {
     formContent.classList.add("ocultarForm");
@@ -241,4 +256,6 @@ form.addEventListener("submit", (ev) => {
 });
 cargarSprints();
 cargarTabla();
+
+
 

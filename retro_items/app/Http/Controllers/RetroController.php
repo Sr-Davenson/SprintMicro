@@ -46,23 +46,29 @@ class RetroController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    
     public function update(Request $request, string $id)
-    {
-        $data = $request->all();
-        $retro = Retro::find($id);
-        if (empty($retro)) {
-            return response()->json(['data' => 'No hay informacion sobre la retro'], 404);
-        }
-        $retro->sprint_id = $data['sprint_id'];
-        $retro->categoria = $data['categoria'];
-        $retro->descripcion = $data['descripcion'];
-        $retro->cumplida = $data['cumplida'];
-        $retro->fecha_revision = $data['fecha_revision'];
-        $retro->created_at = $data['created_at'];
-        $retro->updated_at = $data['updated_at'];
-        $retro->save();
-        return response()->json(["data" => "Retro actualizada"], 200);
+{
+    $data = $request->all();
+    $retro = Retro::find($id);
+
+    if (empty($retro)) {
+        return response()->json(['data' => 'No hay informacion sobre la retro'], 404);
     }
+
+    $retro->sprint_id = $data['sprint_id'];
+    $retro->categoria = $data['categoria'];
+    $retro->descripcion = $data['descripcion'];
+    $retro->cumplida = filter_var($data['cumplida'], FILTER_VALIDATE_BOOLEAN);
+    $retro->fecha_revision = $data['fecha_revision'];
+     $retro->created_at = $data['created_at'];
+    $retro->updated_at = $data['updated_at'];
+
+    $retro->save();
+
+    return response()->json(["data" => "Retro actualizada"], 200);
+}
+
 
     /**
      * Remove the specified resource from storage.
