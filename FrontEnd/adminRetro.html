@@ -13,69 +13,60 @@
         <form name="retrospectivaForm">
             <input type="hidden" name="id" id="id">
             <header>
-                <h2 id="tituloForm"></h2>
+                <h2 id="tituloForm">Formulario</h2>
             </header>
+
             <div>
                 <label for="sprint">Sprint:</label>
-                <select id="sprint" class="form-select" required>
-                    <option value=""></option>
+                <select id="sprint" name="sprint" class="form-select" required>
+                    <option value="">-- Selecciona un sprint --</option>
                 </select>
             </div>
 
-            <h2>Categoría:</h2>
-            <select id="categoriaSelect">
-                <option value="">-- Elige una categoría --</option>
-            </select>
             <div>
-                <label for="descripcion">Descripción</label>
-                <input type="text" name="descripcion" id="descripcion">
+                <label for="categoriaSelect">Categoría:</label>
+                <select id="categoriaSelect" name="categoriaSelect" required>
+                    <option value="">-- Elige una categoría --</option>
+                    <option value="accion">Acción</option>
+                    <option value="logro">Logro</option>
+                    <option value="impedimento">Impedimento</option>
+                    <option value="comentario">Comentario</option>
+                    <option value="otro">Otro</option>
+                </select>
             </div>
+
             <div>
-                <label for="cumplida">Cumplida</label>
+                <label for="descripcion">Descripción:</label>
+                <input type="text" name="descripcion" id="descripcion" required>
+            </div>
+
+            <div>
+                <label for="cumplida">Cumplida:</label>
                 <input type="checkbox" name="cumplida" id="cumplida">
             </div>
+
             <div>
-                <label for="fecha_revision">Fecha Revision</label>
-                <input type="date" name="fecha_revision" id="fecha_revision">
+                <label for="fecha_revision">Fecha de Revisión:</label>
+                <input type="date" name="fecha_revision" id="fecha_revision" required>
             </div>
+
             <div>
-                <label for="created_at">created_at</label>
-                <input type="datetime-local" name="created_at" id="created">
+                <label for="created">Creado:</label>
+                <input type="datetime-local" name="created" id="created" required>
             </div>
+
             <div>
-                <label for="updated_at">updated_at</label>
-                <input type="datetime-local" name="updated_at" id="updated">
+                <label for="updated">Actualizado:</label>
+                <input type="datetime-local" name="updated" id="updated" required>
             </div>
 
             <button type="submit">Guardar</button>
-            <button type="reset" id="cancelarBtn">Cancelar</button>
+            <button type="button" id="cancelarBtn">Cancelar</button>
         </form>
-        <div id="listaRetrospectivas"></div>
     </div>
 
     <section class="container">
         <button id="registrarBtn">Registrar</button>
-        <!-- 
-        <h1>Fechas Activadas</h1>
-        <form class="form" action="" method="post">
-            <div>
-                <label for="fechaIni">Fecha Inicio:</label>
-                <input type="date" id="fechaIni" name="fechaIni" required>
-                <label for="fechaFin">Fecha Fin:</label>
-                <input type="date" id="fechaFin" name="fechaFin" required>
-            </div>
-
-            <h1>Fechas Creación</h1>
-            <form class="form" action="" method="post">
-                <div>
-                    <label for="fechaIniCreacion">Fecha Inicio:</label>
-                    <input type="date" id="fechaIniCreacion" name="fechaIniCreacion" required>
-                    <label for="fechaFinCreacion">Fecha Fin:</label>
-                    <input type="date" id="fechaFinCreacion" name="fechaFinCreacion" required>
-                </div>
-                <button type="submit">Buscar</button>
-            </form>
-        </form> -->
 
         <h1>Historial de Retrospectivas</h1>
         <table class="table" id="tablaRetrospectivas">
@@ -86,9 +77,9 @@
                     <th>Categoría</th>
                     <th>Descripción</th>
                     <th>Cumplida</th>
-                    <th>Fecha De Revision</th>
-                    <th>created_at</th>
-                    <th>updated_at</th>
+                    <th>Fecha De Revisión</th>
+                    <th>Creado</th>
+                    <th>Actualizado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>

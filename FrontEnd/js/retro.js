@@ -7,6 +7,8 @@ const registrarBtn = document.getElementById('registrarBtn');
 const formContent = document.getElementById('retroFormContent');
 const cancelarBtn = document.getElementById('cancelarBtn');
 let operacion = "";
+let sprintsMap = {};
+
 
 class RetroServicios {
     static async getAllRetros() {
@@ -74,15 +76,23 @@ const cargarTabla = async () => {
     }
 };
 
+const categoriasConTilde = {
+    "accion": "Acción",
+    "logro": "Logro",
+    "impedimento": "Impedimento",
+    "comentario": "Comentario",
+    "otro": "Otro"
+};
+
 const generarFila = (item) => {
     const tdId = document.createElement("td");
     tdId.textContent = item.id;
 
     const tdSprint = document.createElement("td");
-    tdSprint.textContent = item.sprint_id;
+    tdSprint.textContent = sprintsMap[item.sprint_id];
 
     const tdCategoria = document.createElement("td");
-    tdCategoria.textContent = item.categoria;
+    tdCategoria.textContent = categoriasConTilde[item.categoria];
 
     const tdDescripcion = document.createElement("td");
     tdDescripcion.textContent = item.descripcion;
@@ -110,7 +120,7 @@ const generarFila = (item) => {
         sprintSelect.value = item.sprint_id;
         categoriaSelect.value = item.categoria;
         form['descripcion'].value = item.descripcion;
-        form['cumplida'].value = item.cumplida;
+        form['cumplida'].checked = item.cumplida;
         form['fecha_revision'].value = item.fecha_revision;
         form['created'].value = item.created_at.slice(0, 16);
         form['updated'].value = item.updated_at.slice(0, 16);
@@ -134,15 +144,17 @@ const generarFila = (item) => {
     tr.appendChild(tdCreated);
     tr.appendChild(tdUpdated);
     tr.appendChild(tdBotones);
+
     return tr;
 };
+
 
 const registrarRetro = async () => {
     const retro = {
         sprint_id: sprintSelect.value,
         categoria: categoriaSelect.value,
         descripcion: form['descripcion'].value,
-        cumplida: form['cumplida'].value === "true",
+        cumplida: form['cumplida'].checked,
         fecha_revision: form['fecha_revision'].value,
         created_at: form['created'].value,
         updated_at: form['updated'].value
@@ -157,7 +169,7 @@ const modificarRetro = async () => {
         sprint_id: sprintSelect.value,
         categoria: categoriaSelect.value,
         descripcion: form['descripcion'].value,
-        cumplida: form['cumplida'].value === "true",
+        cumplida: form['cumplida'].value,
         fecha_revision: form['fecha_revision'].value,
         created_at: form['created'].value,
         updated_at: form['updated'].value
@@ -172,6 +184,40 @@ const eliminarRetro = async (id) => {
     const res = await RetroServicios.deleteRetro(id);
     if (res) cargarTabla();
 };
+
+const cargarSprints = async () => {
+    try {
+        const resp = await fetch('http://127.0.0.1:8000/api/sprint');
+        const json = await resp.json();
+
+        const sprints = json.data;
+        sprintSelect.innerHTML = '<option value="">-- Selecciona un sprint --</option>';
+        sprints.forEach(sprint => {
+            const option = document.createElement('option');
+            option.value = sprint.id;
+            option.textContent = sprint.nombre;
+            sprintSelect.appendChild(option);
+
+            sprintsMap[sprint.id] = sprint.nombre;
+        });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+
+const cargarCategorias = () => {
+    const categorias = ["accion", "logro", "impedimento", "comentario", "otro"];
+    categoriaSelect.innerHTML = '<option value="">-- Elige una categoría --</option>';
+    categorias.forEach(cat => {
+        const option = document.createElement('option');
+        option.value = cat;
+        option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        categoriaSelect.appendChild(option);
+    });
+};
+
+
 
 registrarBtn.addEventListener("click", () => {
     operacion = "crear";
@@ -193,5 +239,6 @@ form.addEventListener("submit", (ev) => {
     }
     formContent.classList.add("ocultarForm");
 });
-
+cargarSprints();
 cargarTabla();
+
