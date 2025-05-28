@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Retrospectivas</title>
+    <link rel="stylesheet" href="css/adminRetro.css">
 </head>
 <body>
     <div class="container">
@@ -11,60 +12,64 @@
         <form id="retrospectivaForm">
             <div class="form-group">
                 <label for="sprint">Sprint:</label>
-                <input type="text" id="sprint" required>
+                <select id="sprint" class="form-select" required>
+                    <option value="">-- Elige un Sprint --</option>
+                </select>
             </div>
 
-            <div class="form-group">
-                <label for="positivo">Aspectos Positivos:</label>
-                <input type="text" id="positivo" required>
-            </div>
-
-            <div class="form-group">
-                <label for="negativo">Aspectos Negativos:</label>
-                <input type="text" id="negativo" required>
-            </div>
-
-            <div class="form-group">
-                <label for="accion">Acciones a Tomar:</label>
-                <input type="text" id="accion" required>
-            </div>
+            <h2>Categoría:</h2>
+            <select id="categoriaSelect">
+                <option value="">-- Elige una categoría --</option>
+            </select>
 
             <button type="submit">Guardar Retrospectiva</button>
         </form>
         <div id="listaRetrospectivas"></div>
     </div>
 
-    <p>
-    </p>
-    
     <section class="container">
         <h1>Fechas Activadas</h1>
         <form class="form" action="" method="post">
-            <div class="form-group">
+            <div>
                 <label for="fechaIni">Fecha Inicio:</label>
                 <input type="date" id="fechaIni" name="fechaIni" required>
-                
                 <label for="fechaFin">Fecha Fin:</label>
                 <input type="date" id="fechaFin" name="fechaFin" required>
             </div>
-            <button type="submit" aria-label="Buscar retrospectivas">Buscar</button>
+
+            <h1>Fechas Creación</h1>
+            <form class="form" action="" method="post">
+                <div>
+                    <label for="fechaIniCreacion">Fecha Inicio:</label>
+                    <input type="date" id="fechaIniCreacion" name="fechaIniCreacion" required>
+                    <label for="fechaFinCreacion">Fecha Fin:</label>
+                    <input type="date" id="fechaFinCreacion" name="fechaFinCreacion" required>
+                </div>
+                <button type="submit">Buscar</button>
+            </form>
         </form>
-        <table class="table">
-            <h1>Historial de Restrospectivas</h1>
+
+        <h1>Historial de Retrospectivas</h1>
+        <table class="table" id="tablaRetrospectivas">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Fecha</th>
+                    <th>Fecha Creación</th>
+                    <th>Fecha Última Actualización</th>
                     <th>Sprint</th>
+                    <th>Categoría</th>
+                    <th>Descripción</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Consulta para historial de restrospectivas -->
+                <!-- Los registros se cargarán dinámicamente con JavaScript -->
             </tbody>
         </table>
+
         <a href="index.html">Volver</a>
     </section>
+
     <script src="js/retro.js"></script>
 </body>
 </html>
