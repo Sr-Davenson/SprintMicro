@@ -1,4 +1,4 @@
-const table = document.getElementById('sprintTable');
+const table = document.getElementById('sprintsTable');
 const form = document.forms['sprintForm'];
 const tituloForm = document.getElementById('tituloForm');
 const registrarBtn = document.getElementById('registrarBtn');
@@ -7,9 +7,9 @@ const cancelarBtn = document.getElementById('cancelarBtn');
 let operacion = '';
 
 class Servicios {
-    static async getAllPersons() {
+    static async getAllSprints() {
         try {
-            const resp = await fetch('http://127.0.0.1:8000/api/retro_items');
+            const resp = await fetch('http://127.0.0.1:8000/api/sprint');
             const bodyResp = await resp.json();
             return bodyResp.data;
         } catch (error) {
@@ -18,56 +18,59 @@ class Servicios {
         }
     }
 
-    static async saveNewPerson(person) {
+    static async saveNewSprint(sprint) {
         try {
-            const resp = await fetch('http://127.0.0.1:8000/api/persona', {
+            const resp = await fetch('http://127.0.0.1:8000/api/sprint', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id: person.id,
-                    name: person.nombre,
-                    email: person.email,
-                    age: person.edad
+                    nombre: sprint.nombre,
+                    fecha_inicio: sprint.fecha_inicio,
+                    fecha_fin: sprint.fecha_fin,
+                    created_at: sprint.created_at,
+                    updated_at: sprint.updated_at
                 })
             });
             const bodyResp = await resp.json();
-            return bodyResp.data == 'Resgitro creado';
+            return bodyResp.data == 'Sprint Creado';
         } catch (error) {
             console.error(error);
             return false;
         }
     }
 
-    static async updatePerson(id, person) {
+    static async updateSprint(id, sprint) {
         try {
-            const resp = await fetch('http://127.0.0.1:8000/api/persona/' + id, {
+            const resp = await fetch('http://127.0.0.1:8000/api/sprint/' + id, {
                 method: 'put',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    name: person.nombre,
-                    email: person.email,
-                    age: person.edad
+                    nombre: sprint.nombre,
+                    fecha_inicio: sprint.fecha_inicio,
+                    fecha_fin: sprint.fecha_fin,
+                    created_at: sprint.created_at,
+                    updated_at: sprint.updated_at
                 })
             });
             const bodyResp = await resp.json();
-            return bodyResp.data == 'Resgitro modificao';
+            return bodyResp.data == 'Sprint actualizada';
         } catch (error) {
             console.error(error);
             return false;
         }
     }
 
-    static async deletePerson(id) {
+    static async deleteSprint(id) {
         try {
-            const resp = await fetch('http://127.0.0.1:8000/api/persona/' + id, {
+            const resp = await fetch('http://127.0.0.1:8000/api/sprint/' + id, {
                 method: 'delete'
             });
             const bodyResp = await resp.json();
-            return bodyResp.data == 'Resgitro eliminado';
+            return bodyResp.data == 'Sprint eliminada';
         } catch (error) {
             console.error(error);
             return false;
@@ -76,10 +79,10 @@ class Servicios {
 }
 
 const cargarTabla = async () => {
-    const personas = await Servicios.getAllPersons();
+    const sprints = await Servicios.getAllSprints();
     const tbody = table.getElementsByTagName('tbody')[0];
     tbody.innerHTML = '';
-    for (let item of personas) {
+    for (let item of sprints) {
         const tr = generarFila(item);
         tbody.appendChild(tr);
     }
@@ -92,29 +95,38 @@ const generarFila = (item) => {
     const tdNombre = document.createElement('td');
     tdNombre.textContent = item.nombre;
 
-    const tdEmail = document.createElement('td');
-    tdEmail.textContent = item.email;
+    const tdFechaini = document.createElement('td');
+    tdFechaini.textContent = new Date(item.fecha_inicio).toLocaleDateString();
 
-    const tdEdad = document.createElement('td');
-    tdEdad.textContent = item.edad;
+    const tdFechaFin = document.createElement('td');
+    tdFechaFin.textContent = new Date(item.fecha_fin).toLocaleDateString();
+
+    const tdCreated_at = document.createElement('td');
+tdCreated_at.textContent = new Date(item.created_at).toLocaleString();
+
+
+    const tdUpdated_at = document.createElement('td');
+    tdUpdated_at.textContent = new Date(item.updated_at).toLocaleString();
+
 
     const modificarBtn = document.createElement('button');
     modificarBtn.textContent = 'Modificar';
     modificarBtn.addEventListener('click', () => {
         operacion = 'modificar';
-        tituloForm.textContent = 'Modificar persona';
+        tituloForm.textContent = 'Modificar Sprint';
         formContent.classList.remove('ocultarForm');
-        form['idInput'].value = item.id;
-        form['idInput'].setAttribute('readonly', true);
-        form['nombreInput'].value = item.nombre;
-        form['emailInput'].value = item.email;
-        form['edadInput'].value = item.edad;
+        form['id'].value = item.id;
+        form['nombre'].value = item.nombre;
+        form['fechaIni'].value = item.fecha_inicio;
+        form['fechaFin'].value = item.fecha_fin;
+        form['created'].value = item.created_at.slice(0, 16);
+        form['updated'].value = item.updated_at.slice(0, 16);
     });
 
     const eliminarBtn = document.createElement('button');
     eliminarBtn.textContent = 'Eliminar';
     eliminarBtn.addEventListener('click', () => {
-        eliminarPersona(item.id);
+        eliminarSprint(item.id);
     });
 
     const tdBotones = document.createElement('td');
@@ -124,54 +136,59 @@ const generarFila = (item) => {
     const tr = document.createElement('tr');
     tr.appendChild(tdId);
     tr.appendChild(tdNombre);
-    tr.appendChild(tdEmail);
-    tr.appendChild(tdEdad);
+    tr.appendChild(tdFechaini);
+    tr.appendChild(tdFechaFin);
+    tr.appendChild(tdCreated_at);
+    tr.appendChild(tdUpdated_at);
     tr.appendChild(tdBotones);
     return tr;
 }
 
 cargarTabla();
 
-const registrarPersona = async () => {
-    const persona = {
-        id: form['idInput'].value,
-        nombre: form['nombreInput'].value,
-        email: form['emailInput'].value,
-        edad: form['edadInput'].value
+const registrarSprint = async () => {
+    const sprint = {
+        nombre: form['nombre'].value,
+        fecha_inicio: form['fechaIni'].value,
+        fecha_fin: form['fechaFin'].value,
+        created_at: form['created'].value,
+        updated_at: form['updated'].value
     };
-    const res = await Servicios.saveNewPerson(persona);
+
+    const res = await Servicios.saveNewSprint(sprint);
     if (res) {
         cargarTabla();
     }
-}
+};
 
-const modificarPersona = async () => {
-    const persona = {
-        nombre: form['nombreInput'].value,
-        email: form['emailInput'].value,
-        edad: form['edadInput'].value
+const modificarSprint = async () => {
+    const sprint = {
+        nombre: form['nombre'].value,
+        fecha_inicio: form['fechaIni'].value,
+        fecha_fin: form['fechaFin'].value,
+        created_at: form['created'].value,
+        updated_at: form['updated'].value
     };
-    const id = form['idInput'].value;
-    const res = await Servicios.updatePerson(id, persona);
+
+    const id = form['id'].value;
+    const res = await Servicios.updateSprint(id, sprint);
+    if (res) {
+        cargarTabla();
+    }
+};
+
+const eliminarSprint = async (id) => {
+    const res = await Servicios.deleteSprint(id);
     if (res) {
         cargarTabla();
     }
 }
-
-const eliminarPersona = async (id) => {
-    const res = await Servicios.deletePerson(id);
-    if (res) {
-        cargarTabla();
-    }
-}
-
 
 registrarBtn.addEventListener('click', () => {
     operacion = 'crear';
-    tituloForm.textContent = 'Registrar persona';
-    form['idInput'].removeAttribute('readonly');
+    tituloForm.textContent = 'Registrar Sprint';
     form.reset();
-    formContent.classList.remove('ocultarForm');
+    document.getElementById("sprintFormContent").classList.remove('ocultarForm');
 });
 
 cancelarBtn.addEventListener('click', () => {
@@ -181,9 +198,12 @@ cancelarBtn.addEventListener('click', () => {
 form.addEventListener('submit', (ev) => {
     ev.preventDefault();
     if (operacion == 'crear') {
-        registrarPersona();
+        registrarSprint();
     } else if (operacion == 'modificar') {
-        modificarPersona();
+        modificarSprint();
     }
     formContent.classList.add('ocultarForm');
 });
+
+
+

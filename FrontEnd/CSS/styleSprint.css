@@ -1,7 +1,3 @@
-.contentForm {
+.ocultarForm {
     display: none;
-}
-
-.contentForm.mostrarForm {
-    display: block;
 }
