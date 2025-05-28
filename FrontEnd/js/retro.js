@@ -1,77 +1,64 @@
-const tabla = document.getElementById("tablaRetrospectivas").querySelector("tbody");
-const form = document.getElementById("retrospectivaForm");
+const tabla = document.getElementById("tablaRetrospectivas");
+const form = document.forms['retrospectivaForm'];
+const tituloForm = document.getElementById('tituloForm');
 const sprintSelect = document.getElementById("sprint");
 const categoriaSelect = document.getElementById("categoriaSelect");
-const registrarBtn = document.getElementById("registrarBtn");
-const cancelarBtn = document.getElementById("cancelarBtn");
+const registrarBtn = document.getElementById('registrarBtn');
+const formContent = document.getElementById('retroFormContent');
+const cancelarBtn = document.getElementById('cancelarBtn');
 let operacion = "";
-
-const categoriasValidas = ["accion", "logro", "impedimento", "comentario", "otro"]; // Valores permitidos por ENUM
 
 class RetroServicios {
     static async getAllRetros() {
         try {
-            const resp = await fetch("http://127.0.0.1:8000/api/retro");
+            const resp = await fetch('http://127.0.0.1:8000/api/retro');
             const bodyResp = await resp.json();
             return bodyResp.data;
         } catch (error) {
-            console.error("Error al obtener retrospectivas: " + error);
+            console.error(error);
             return null;
         }
     }
 
     static async saveNewRetro(retro) {
-        if (!categoriasValidas.includes(retro.categoria)) {
-            alert("Error: La categoría no es válida. Debe ser una de " + categoriasValidas.join(", "));
-            return false;
-        }
         try {
             const resp = await fetch("http://127.0.0.1:8000/api/retro", {
                 method: "post",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    sprint: retro.sprint,
-                    categoria: retro.categoria,
-                    created_at: retro.created_at,
-                    updated_at: retro.updated_at
-                })
+                body: JSON.stringify(retro)
             });
             const bodyResp = await resp.json();
-            return bodyResp.data === "Retrospectiva Creada";
+            return bodyResp.data == "Retro Creada";
         } catch (error) {
-            console.error("Error al crear retrospectiva: " + error);
+            console.error(error);
             return false;
         }
     }
 
     static async updateRetro(id, retro) {
         try {
-            const resp = await fetch("http://127.0.0.1:8000/api/retro/" + id, {
+            const resp = await fetch(`http://127.0.0.1:8000/api/retro/${id}`, {
                 method: "put",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    sprint: retro.sprint,
-                    categoria: retro.categoria,
-                    updated_at: retro.updated_at
-                })
+                body: JSON.stringify(retro)
             });
             const bodyResp = await resp.json();
-            return bodyResp.data === "Retrospectiva actualizada";
+            return bodyResp.data == "Retrospectiva actualizada";
         } catch (error) {
-            console.error("Error al actualizar retrospectiva: " + error);
+            console.error(error);
             return false;
         }
     }
 
     static async deleteRetro(id) {
         try {
-            const resp = await fetch("http://127.0.0.1:8000/api/retro/" + id, {
+            const resp = await fetch(`http://127.0.0.1:8000/api/retro/${id}`, {
                 method: "delete"
             });
             const bodyResp = await resp.json();
-            return bodyResp.data === "Retrospectiva eliminada";
+            return bodyResp.data == "Retro eliminada";
         } catch (error) {
-            console.error("Error al eliminar retrospectiva: " + error);
+            console.error(error);
             return false;
         }
     }
@@ -79,8 +66,8 @@ class RetroServicios {
 
 const cargarTabla = async () => {
     const retros = await RetroServicios.getAllRetros();
-    const tbody = tabla;
-    tbody.innerHTML = "";
+    const tbody = tabla.getElementsByTagName('tbody')[0];
+    tbody.innerHTML = '';
     for (let item of retros) {
         const tr = generarFila(item);
         tbody.appendChild(tr);
@@ -92,31 +79,46 @@ const generarFila = (item) => {
     tdId.textContent = item.id;
 
     const tdSprint = document.createElement("td");
-    tdSprint.textContent = item.sprint;
+    tdSprint.textContent = item.sprint_id;
 
     const tdCategoria = document.createElement("td");
     tdCategoria.textContent = item.categoria;
 
-    const tdCreated_at = document.createElement("td");
-    tdCreated_at.textContent = new Date(item.created_at).toLocaleString();
+    const tdDescripcion = document.createElement("td");
+    tdDescripcion.textContent = item.descripcion;
 
-    const tdUpdated_at = document.createElement("td");
-    tdUpdated_at.textContent = new Date(item.updated_at).toLocaleString();
+    const tdCumplida = document.createElement("td");
+    tdCumplida.textContent = item.cumplida ? "Sí" : "No";
+
+    const tdFechaRevision = document.createElement("td");
+    tdFechaRevision.textContent = new Date(item.fecha_revision).toLocaleDateString();
+
+    const tdCreated = document.createElement("td");
+    tdCreated.textContent = new Date(item.created_at).toLocaleString();
+
+    const tdUpdated = document.createElement("td");
+    tdUpdated.textContent = new Date(item.updated_at).toLocaleString();
 
     const modificarBtn = document.createElement("button");
     modificarBtn.textContent = "Modificar";
     modificarBtn.addEventListener("click", () => {
         operacion = "modificar";
-        form["id"].value = item.id;
-        form["sprint"].value = item.sprint;
-        form["categoria"].value = item.categoria;
+        tituloForm.textContent = "Modificar Retrospectiva";
+        formContent.classList.remove("ocultarForm");
+
+        form['id'].value = item.id;
+        sprintSelect.value = item.sprint_id;
+        categoriaSelect.value = item.categoria;
+        form['descripcion'].value = item.descripcion;
+        form['cumplida'].value = item.cumplida;
+        form['fecha_revision'].value = item.fecha_revision;
+        form['created'].value = item.created_at.slice(0, 16);
+        form['updated'].value = item.updated_at.slice(0, 16);
     });
 
     const eliminarBtn = document.createElement("button");
     eliminarBtn.textContent = "Eliminar";
-    eliminarBtn.addEventListener("click", () => {
-        eliminarRetro(item.id);
-    });
+    eliminarBtn.addEventListener("click", () => eliminarRetro(item.id));
 
     const tdBotones = document.createElement("td");
     tdBotones.appendChild(modificarBtn);
@@ -126,54 +128,60 @@ const generarFila = (item) => {
     tr.appendChild(tdId);
     tr.appendChild(tdSprint);
     tr.appendChild(tdCategoria);
-    tr.appendChild(tdCreated_at);
-    tr.appendChild(tdUpdated_at);
+    tr.appendChild(tdDescripcion);
+    tr.appendChild(tdCumplida);
+    tr.appendChild(tdFechaRevision);
+    tr.appendChild(tdCreated);
+    tr.appendChild(tdUpdated);
     tr.appendChild(tdBotones);
     return tr;
 };
 
 const registrarRetro = async () => {
     const retro = {
-        sprint: form["sprint"].value,
-        categoria: form["categoria"].value,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        sprint_id: sprintSelect.value,
+        categoria: categoriaSelect.value,
+        descripcion: form['descripcion'].value,
+        cumplida: form['cumplida'].value === "true",
+        fecha_revision: form['fecha_revision'].value,
+        created_at: form['created'].value,
+        updated_at: form['updated'].value
     };
 
     const res = await RetroServicios.saveNewRetro(retro);
-    if (res) {
-        cargarTabla();
-    }
+    if (res) cargarTabla();
 };
 
 const modificarRetro = async () => {
     const retro = {
-        sprint: form["sprint"].value,
-        categoria: form["categoria"].value,
-        updated_at: new Date().toISOString()
+        sprint_id: sprintSelect.value,
+        categoria: categoriaSelect.value,
+        descripcion: form['descripcion'].value,
+        cumplida: form['cumplida'].value === "true",
+        fecha_revision: form['fecha_revision'].value,
+        created_at: form['created'].value,
+        updated_at: form['updated'].value
     };
 
-    const id = form["id"].value;
+    const id = form['id'].value;
     const res = await RetroServicios.updateRetro(id, retro);
-    if (res) {
-        cargarTabla();
-    }
+    if (res) cargarTabla();
 };
 
 const eliminarRetro = async (id) => {
     const res = await RetroServicios.deleteRetro(id);
-    if (res) {
-        cargarTabla();
-    }
+    if (res) cargarTabla();
 };
 
 registrarBtn.addEventListener("click", () => {
     operacion = "crear";
+    tituloForm.textContent = "Registrar Retrospectiva";
     form.reset();
+    formContent.classList.remove("ocultarForm");
 });
 
 cancelarBtn.addEventListener("click", () => {
-    form.reset();
+    formContent.classList.add("ocultarForm");
 });
 
 form.addEventListener("submit", (ev) => {
@@ -183,4 +191,7 @@ form.addEventListener("submit", (ev) => {
     } else if (operacion === "modificar") {
         modificarRetro();
     }
+    formContent.classList.add("ocultarForm");
 });
+
+cargarTabla();

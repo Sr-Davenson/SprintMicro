@@ -146,7 +146,7 @@ tdCreated_at.textContent = new Date(item.created_at).toLocaleString();
 
 cargarTabla();
 
-const registrarSprint = async () => {
+const registrarRetro = async () => {
     const sprint = {
         nombre: form['nombre'].value,
         fecha_inicio: form['fechaIni'].value,
@@ -161,7 +161,7 @@ const registrarSprint = async () => {
     }
 };
 
-const modificarSprint = async () => {
+const modificarRetro = async () => {
     const sprint = {
         nombre: form['nombre'].value,
         fecha_inicio: form['fechaIni'].value,
@@ -198,9 +198,9 @@ cancelarBtn.addEventListener('click', () => {
 form.addEventListener('submit', (ev) => {
     ev.preventDefault();
     if (operacion == 'crear') {
-        registrarSprint();
+        registrarRetro();
     } else if (operacion == 'modificar') {
-        modificarSprint();
+        modificarRetro();
     }
     formContent.classList.add('ocultarForm');
 });
