@@ -286,7 +286,6 @@ cancelarBtn.addEventListener("click", () => {
 
 form.addEventListener("submit", (ev) => {
     ev.preventDefault();
-    //Validar campos
     if(!validarFormulario()){
         return;
     }
@@ -300,11 +299,9 @@ form.addEventListener("submit", (ev) => {
 cargarSprints();
 cargarTabla();
 
-//Probar Validaciones
 
-// Función para validar todo el formulario
 const validarFormulario = () => {
-    // Validar campos obligatorios
+
     if (!sprintSelect.value) {
         alert("Debe seleccionar un sprint");
         sprintSelect.focus();

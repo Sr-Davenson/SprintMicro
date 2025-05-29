@@ -248,15 +248,13 @@ const validarFormulario = () => {
         return false;
     }
     
-    // Validar que la fecha de inicio no sea en el pasado (opcional)
     if (fechaIni < fechaActual.setHours(0, 0, 0, 0)) {
         if (!confirm("La fecha de inicio es anterior a hoy. ¿Está seguro?")) {
             form['fechaIni'].focus();
             return false;
         }
     }
-    
-    // Validar fechas de creación y actualización
+
     const fechaCreacion = new Date(form['created'].value);
     const fechaActualizacion = new Date(form['updated'].value);
     
