@@ -286,6 +286,10 @@ cancelarBtn.addEventListener("click", () => {
 
 form.addEventListener("submit", (ev) => {
     ev.preventDefault();
+    //Validar campos
+    if(!validarFormulario()){
+        return;
+    }
     if (operacion === "crear") {
         registrarRetro();
     } else if (operacion === "modificar") {
@@ -296,5 +300,67 @@ form.addEventListener("submit", (ev) => {
 cargarSprints();
 cargarTabla();
 
+//Probar Validaciones
 
-
+// Función para validar todo el formulario
+const validarFormulario = () => {
+    // Validar campos obligatorios
+    if (!sprintSelect.value) {
+        alert("Debe seleccionar un sprint");
+        sprintSelect.focus();
+        return false;
+    }
+    
+    if (!categoriaSelect.value) {
+        alert("Debe seleccionar una categoría");
+        categoriaSelect.focus();
+        return false;
+    }
+    
+    const descripcion = form['descripcion'].value.trim();
+    if (!descripcion) {
+        alert("La descripción es obligatoria");
+        form['descripcion'].focus();
+        return false;
+    }
+    
+    if (descripcion.length < 5 || descripcion.length > 500) {
+        alert("La descripción debe tener entre 5 y 500 caracteres");
+        form['descripcion'].focus();
+        return false;
+    }
+    
+    // Validación de fechas
+    const fechaRevision = new Date(form['fecha_revision'].value);
+    const fechaActual = new Date();
+    
+    if (isNaN(fechaRevision.getTime())) {
+        alert("Fecha de revisión no válida");
+        form['fecha_revision'].focus();
+        return false;
+    }
+    
+    // Para acciones, la fecha de revisión debe ser futura
+    if (categoriaSelect.value === "accion" && fechaRevision < fechaActual) {
+        alert("Para acciones, la fecha de revisión debe ser futura");
+        form['fecha_revision'].focus();
+        return false;
+    }
+    
+    // Validar fechas de creación y actualización
+    const fechaCreacion = new Date(form['created'].value);
+    const fechaActualizacion = new Date(form['updated'].value);
+    
+    if (isNaN(fechaCreacion.getTime()) || isNaN(fechaActualizacion.getTime())) {
+        alert("Fechas de creación/actualización no válidas");
+        return false;
+    }
+    
+    if (fechaActualizacion < fechaCreacion) {
+        alert("La fecha de actualización no puede ser anterior a la de creación");
+        form['updated'].focus();
+        return false;
+    }
+    
+    return true;
+};

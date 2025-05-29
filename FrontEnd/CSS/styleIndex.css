@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url("../CSS/resources/index.jpg") no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
+  background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: 300px;
+}
+
+.container h1 {
+    color: rgb(13, 13, 13);
+    margin-bottom: 20px;
+    font-size: 20px;
+
+}
+.container a {
+    display: block;
+    background-color: #411414;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 10px 0;
+    transition: background-color 0.3s;
+}
+.container a:hover {
+    background-color: #532a1d;
+}

@@ -2,16 +2,19 @@
     display: none;
 }
 
+
 body {
     margin: 0;
     padding: 0;
+    font-family: Arial, sans-serif;
     background: url("../CSS/resources/index.jpg") no-repeat center center fixed;
     background-size: cover;
-    font-family: Arial, sans-serif;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    color: #fff;
 }
 
 
@@ -21,23 +24,43 @@ body {
     -webkit-backdrop-filter: blur(12px);
     border-radius: 20px;
     padding: 30px;
-    width: 90%;
-    max-width: 1000px;
+    width: 95%;
+    max-width: 1100px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-    color: #fff;
+    margin-top: 20px;
+}
+
+
+#retroFormContent {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 30px;
+    border-radius: 20px;
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    color: white;
+}
+
+
+.ocultarForm {
+    display: none;
 }
 
 
 form {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-    margin-bottom: 30px;
+    flex-direction: column;
+    gap: 15px;
 }
 
 form div {
-    flex: 1 1 45%;
     display: flex;
     flex-direction: column;
 }
@@ -48,33 +71,34 @@ form label {
     color: #fff;
 }
 
-form input {
-    padding: 8px;
-    border: none;
+form input,
+form select {
+    padding: 10px;
     border-radius: 8px;
+    border: none;
     outline: none;
 }
 
 
 button {
     padding: 10px 20px;
-    margin-top: 10px;
-    background-color: #541111;
-    color: white;
+    background-color: #007bff;
     border: none;
     border-radius: 8px;
+    color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #563912;
+    background-color: #0056b3;
 }
 
 
-.tableSprint {
+.table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(6px);
     color: #fff;
@@ -82,22 +106,23 @@ button:hover {
     overflow: hidden;
 }
 
-.tableSprint th,
-.tableSprint td {
-    border: 1px solid rgba(255, 255, 255, 0.2);
+.table th,
+.table td {
     padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     text-align: center;
 }
 
-.tableSprint th {
+.table th {
     background-color: rgba(0, 123, 255, 0.3);
 }
+
 
 a {
     display: inline-block;
     margin-top: 20px;
-    color: #fff;
     text-decoration: underline;
+    color: white;
 }
 
 a:hover {
