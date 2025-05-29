@@ -330,7 +330,6 @@ const validarFormulario = () => {
         return false;
     }
     
-    // Validación de fechas
     const fechaRevision = new Date(form['fecha_revision'].value);
     const fechaActual = new Date();
     
@@ -340,14 +339,12 @@ const validarFormulario = () => {
         return false;
     }
     
-    // Para acciones, la fecha de revisión debe ser futura
     if (categoriaSelect.value === "accion" && fechaRevision < fechaActual) {
         alert("Para acciones, la fecha de revisión debe ser futura");
         form['fecha_revision'].focus();
         return false;
     }
     
-    // Validar fechas de creación y actualización
     const fechaCreacion = new Date(form['created'].value);
     const fechaActualizacion = new Date(form['updated'].value);
     
