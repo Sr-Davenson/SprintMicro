@@ -197,7 +197,7 @@ cancelarBtn.addEventListener('click', () => {
 
 form.addEventListener('submit', (ev) => {
     ev.preventDefault();
-    //Validar campos
+
     if(!validarFormulario()){
         return;
     }
@@ -209,9 +209,8 @@ form.addEventListener('submit', (ev) => {
     formContent.classList.add('ocultarForm');
 });
 
-// Función para validar todo el formulario
 const validarFormulario = () => {
-    // Validar nombre
+
     const nombre = form['nombre'].value.trim();
     if (!nombre) {
         alert("El nombre del sprint es obligatorio");
@@ -225,7 +224,6 @@ const validarFormulario = () => {
         return false;
     }
     
-    // Validar fechas de inicio y fin
     const fechaIni = new Date(form['fechaIni'].value);
     const fechaFin = new Date(form['fechaFin'].value);
     const fechaActual = new Date();
