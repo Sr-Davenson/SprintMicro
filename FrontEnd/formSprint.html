@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personas</title>
-    <link rel="stylesheet" href="css/styleSprint.css">
+    <title>Registro de Sprint</title>
+    <link rel="stylesheet" href="CSS/styleSprint.css">
 </head>
 
 <body>
-    <section>
+    <section class="container">
+        <button id="registrarBtn">Registrar</button>
+
         <div id="sprintFormContent" class="ocultarForm">
             <form name="sprintForm">
                 <input type="hidden" name="id" id="id">
@@ -44,8 +46,7 @@
         </div>
 
         <div>
-            <button id="registrarBtn">Registrar</button>
-            <table id="sprintsTable">
+            <table class="tableSprint" id="sprintsTable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -65,9 +66,7 @@
             </table>
         </div>
         <a href="index.html">Volver</a>
-
     </section>
-
     <script src="js/sprint.js"></script>
 </body>
 
