@@ -27,8 +27,10 @@ class SprintController extends Controller
         $newSprint->nombre = $data['nombre'];
         $newSprint->fecha_inicio = $data['fecha_inicio'];
         $newSprint->fecha_fin = $data['fecha_fin'];
-        $newSprint->created_at = $data['created_at'];
-        $newSprint->updated_at = $data['updated_at'];
+        $newSprint->created_at = now()->setTimezone('America/Bogota');
+        $newSprint->updated_at = now()->setTimezone('America/Bogota');
+        // $newSprint->created_at = $data['created_at'];
+        // $newSprint->updated_at = $data['updated_at'];
         $newSprint->save();
         return response()->json(["data" => "Sprint Creado"], 201);
     }
@@ -54,8 +56,7 @@ class SprintController extends Controller
         $sprint->nombre = $data['nombre'];
         $sprint->fecha_inicio = $data['fecha_inicio'];
         $sprint->fecha_fin = $data['fecha_fin'];
-        $sprint->created_at = $data['created_at'];
-        $sprint->updated_at = $data['updated_at'];
+        $sprint->updated_at = now()->setTimezone('America/Bogota');
         $sprint->save();
         return response()->json(["data" => "Sprint actualizada"], 200);
     }

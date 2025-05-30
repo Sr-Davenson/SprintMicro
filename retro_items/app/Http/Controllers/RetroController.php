@@ -29,8 +29,8 @@ class RetroController extends Controller
         $newRetro->descripcion = $data['descripcion'];
         $newRetro->cumplida = $data['cumplida'];
         $newRetro->fecha_revision = $data['fecha_revision'];
-        $newRetro->created_at = $data['created_at'];
-        $newRetro->updated_at = $data['updated_at'];
+        $newRetro->created_at = now()->setTimezone('America/Bogota');
+        $newRetro->updated_at = now()->setTimezone('America/Bogota');
         $newRetro->save();
         return response()->json(["data" => "Retro Creada"], 201);
     }
@@ -61,8 +61,7 @@ class RetroController extends Controller
     $retro->descripcion = $data['descripcion'];
     $retro->cumplida = filter_var($data['cumplida'], FILTER_VALIDATE_BOOLEAN);
     $retro->fecha_revision = $data['fecha_revision'];
-     $retro->created_at = $data['created_at'];
-    $retro->updated_at = $data['updated_at'];
+    $retro->updated_at = now()->setTimezone('America/Bogota');
 
     $retro->save();
 

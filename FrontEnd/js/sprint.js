@@ -28,9 +28,7 @@ class Servicios {
                 body: JSON.stringify({
                     nombre: sprint.nombre,
                     fecha_inicio: sprint.fecha_inicio,
-                    fecha_fin: sprint.fecha_fin,
-                    created_at: sprint.created_at,
-                    updated_at: sprint.updated_at
+                    fecha_fin: sprint.fecha_fin
                 })
             });
             const bodyResp = await resp.json();
@@ -51,9 +49,7 @@ class Servicios {
                 body: JSON.stringify({
                     nombre: sprint.nombre,
                     fecha_inicio: sprint.fecha_inicio,
-                    fecha_fin: sprint.fecha_fin,
-                    created_at: sprint.created_at,
-                    updated_at: sprint.updated_at
+                    fecha_fin: sprint.fecha_fin
                 })
             });
             const bodyResp = await resp.json();
@@ -150,9 +146,7 @@ const registrarRetro = async () => {
     const sprint = {
         nombre: form['nombre'].value,
         fecha_inicio: form['fechaIni'].value,
-        fecha_fin: form['fechaFin'].value,
-        created_at: form['created'].value,
-        updated_at: form['updated'].value
+        fecha_fin: form['fechaFin'].value
     };
 
     const res = await Servicios.saveNewSprint(sprint);
@@ -165,9 +159,7 @@ const modificarRetro = async () => {
     const sprint = {
         nombre: form['nombre'].value,
         fecha_inicio: form['fechaIni'].value,
-        fecha_fin: form['fechaFin'].value,
-        created_at: form['created'].value,
-        updated_at: form['updated'].value
+        fecha_fin: form['fechaFin'].value
     };
 
     const id = form['id'].value;
@@ -198,9 +190,9 @@ cancelarBtn.addEventListener('click', () => {
 form.addEventListener('submit', (ev) => {
     ev.preventDefault();
 
-    if(!validarFormulario()){
-        return;
-    }
+    // if(!validarFormulario()){
+    //     return;
+    // }
     if (operacion == 'crear') {
         registrarRetro();
     } else if (operacion == 'modificar') {
@@ -209,63 +201,66 @@ form.addEventListener('submit', (ev) => {
     formContent.classList.add('ocultarForm');
 });
 
-const validarFormulario = () => {
 
-    const nombre = form['nombre'].value.trim();
-    if (!nombre) {
-        alert("El nombre del sprint es obligatorio");
-        form['nombre'].focus();
-        return false;
-    }
-    
-    if (nombre.length < 3 || nombre.length > 50) {
-        alert("El nombre debe tener entre 3 y 50 caracteres");
-        form['nombre'].focus();
-        return false;
-    }
-    
-    const fechaIni = new Date(form['fechaIni'].value);
-    const fechaFin = new Date(form['fechaFin'].value);
-    const fechaActual = new Date();
-    
-    if (isNaN(fechaIni.getTime())) {
-        alert("Fecha de inicio no válida");
-        form['fechaIni'].focus();
-        return false;
-    }
-    
-    if (isNaN(fechaFin.getTime())) {
-        alert("Fecha de fin no válida");
-        form['fechaFin'].focus();
-        return false;
-    }
-    
-    if (fechaFin <= fechaIni) {
-        alert("La fecha de fin debe ser posterior a la fecha de inicio");
-        form['fechaFin'].focus();
-        return false;
-    }
-    
-    if (fechaIni < fechaActual.setHours(0, 0, 0, 0)) {
-        if (!confirm("La fecha de inicio es anterior a hoy. ¿Está seguro?")) {
-            form['fechaIni'].focus();
-            return false;
-        }
-    }
+// const validarFormulario = () => {
 
-    const fechaCreacion = new Date(form['created'].value);
-    const fechaActualizacion = new Date(form['updated'].value);
+//     const nombre = form['nombre'].value.trim();
+//     if (!nombre) {
+//         alert("El nombre del sprint es obligatorio");
+//         form['nombre'].focus();
+//         return false;
+//     }
     
-    if (isNaN(fechaCreacion.getTime()) || isNaN(fechaActualizacion.getTime())) {
-        alert("Fechas de creación/actualización no válidas");
-        return false;
-    }
+//     if (nombre.length < 3 || nombre.length > 50) {
+//         alert("El nombre debe tener entre 3 y 50 caracteres");
+//         form['nombre'].focus();
+//         return false;
+//     }
     
-    if (fechaActualizacion < fechaCreacion) {
-        alert("La fecha de actualización no puede ser anterior a la de creación");
-        form['updated'].focus();
-        return false;
-    }
+
+//     const fechaIni = new Date(form['fechaIni'].value);
+//     const fechaFin = new Date(form['fechaFin'].value);
+//     const fechaActual = new Date();
     
-    return true;
-};
+//     if (isNaN(fechaIni.getTime())) {
+//         alert("Fecha de inicio no válida");
+//         form['fechaIni'].focus();
+//         return false;
+//     }
+    
+//     if (isNaN(fechaFin.getTime())) {
+//         alert("Fecha de fin no válida");
+//         form['fechaFin'].focus();
+//         return false;
+//     }
+    
+//     if (fechaFin <= fechaIni) {
+//         alert("La fecha de fin debe ser posterior a la fecha de inicio");
+//         form['fechaFin'].focus();
+//         return false;
+//     }
+    
+
+//     if (fechaIni < fechaActual.setHours(0, 0, 0, 0)) {
+//         if (!confirm("La fecha de inicio es anterior a hoy. ¿Está seguro?")) {
+//             form['fechaIni'].focus();
+//             return false;
+//         }
+//     }
+    
+//     const fechaCreacion = new Date(form['created'].value);
+//     const fechaActualizacion = new Date(form['updated'].value);
+    
+//     if (isNaN(fechaCreacion.getTime()) || isNaN(fechaActualizacion.getTime())) {
+//         alert("Fechas de creación/actualización no válidas");
+//         return false;
+//     }
+    
+//     if (fechaActualizacion < fechaCreacion) {
+//         alert("La fecha de actualización no puede ser anterior a la de creación");
+//         form['updated'].focus();
+//         return false;
+//     }
+    
+//     return true;
+// };
