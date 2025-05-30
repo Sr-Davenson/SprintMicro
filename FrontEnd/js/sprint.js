@@ -178,9 +178,6 @@ cancelarBtn.addEventListener('click', () => {
 form.addEventListener('submit', (ev) => {
     ev.preventDefault();
 
-    // if(!validarFormulario()){
-    //     return;
-    // }
     if (operacion == 'crear') {
         registrarRetro();
     } else if (operacion == 'modificar') {
