@@ -18,3 +18,11 @@ Route::controller(SprintController::class)->group(function(){
     Route::put('sprint/{id}','update');
     Route::delete('sprint/{id}','destroy');
 });
+
+Route::controller(RetroController::class)->group(function(){
+    Route::get('retro','index');
+    Route::post('retro','store');
+    Route::put('retro/{id}','update');
+    Route::delete('retro/{id}','destroy');
+    Route::get('retro/acciones-anteriores/{sprintId}', 'getAccionesSprintAnterior');
+});

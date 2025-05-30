@@ -88,4 +88,28 @@ class RetroController extends Controller
         $retro->delete();
         return response()->json(["data" => "Retro eliminada"], 200);
     }
+
+
+    public function getAccionesSprintAnterior($sprintId)
+    {
+        $sprintActual = Sprint::find($sprintId);
+        
+        if (!$sprintActual) {
+            return response()->json(['data' => 'Sprint no encontrado'], 404);
+        }
+
+        $sprintAnterior = Sprint::where('fecha_inicio', '<', $sprintActual->fecha_inicio)
+                            ->orderBy('fecha_inicio', 'desc')
+                            ->first();
+
+        if (!$sprintAnterior) {
+            return response()->json(['data' => []], 200);
+        }
+
+        $acciones = Retro::where('sprint_id', $sprintAnterior->id)
+                    ->where('categoria', 'accion')
+                    ->get();
+
+        return response()->json(['data' => $acciones], 200);
+    }
 }
