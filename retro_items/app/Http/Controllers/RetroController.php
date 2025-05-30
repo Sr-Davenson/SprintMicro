@@ -47,26 +47,31 @@ class RetroController extends Controller
      * Display the specified resource.
      */
 
-    public function show(string $sprint_id)
-    {
-        $sprintActual = Sprint::find($sprint_id);
-        if (!$sprintActual) {
-            return response()->json(["error" => "Sprint no encontrado"], 404);
-        }
-
-        $sprintAnterior = Sprint::where('id', '<', $sprint_id)->orderBy('id', 'desc')->first();
-
-        $retrosActuales = Retro::where('sprint_id', $sprint_id)->get();
-
-        $retrosAnteriores = $sprintAnterior ? Retro::where('sprint_id', $sprintAnterior->id)->get() : collect([]);
-
-        return response()->json([
-            "sprint_actual" => $sprint_id,
-            "retros_actuales" => $retrosActuales,
-            "sprint_anterior" => $sprintAnterior ? $sprintAnterior->id : null,
-            "retros_anteriores" => $retrosAnteriores
-        ], 200);
+public function show(string $sprint_id)
+{
+    $sprintActual = Sprint::find($sprint_id);
+    if (!$sprintActual) {
+        return response()->json(["error" => "Sprint no encontrado"], 404);
     }
+
+    $sprintAnterior = Sprint::where('id', '<', $sprint_id)->orderBy('id', 'desc')->first();
+
+    $retrosActuales = Retro::where('sprint_id', $sprint_id)->get();
+
+    $accionesNoCumplidas = $sprintAnterior
+        ? Retro::where('sprint_id', $sprintAnterior->id)
+            ->where('categoria', 'accion')
+            ->where('cumplida', false)
+            ->get()
+        : collect([]);
+
+    return response()->json([
+        "sprint_actual" => $sprint_id,
+        "retros_actuales" => $retrosActuales,
+        "sprint_anterior" => $sprintAnterior ? $sprintAnterior->id : null,
+        "acciones_no_cumplidas_Sprint_anterior" => $accionesNoCumplidas
+    ], 200);
+}
     /**
      * Update the specified resource in storage.
      */
