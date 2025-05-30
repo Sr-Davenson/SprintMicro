@@ -97,14 +97,6 @@ const generarFila = (item) => {
     const tdFechaFin = document.createElement('td');
     tdFechaFin.textContent = new Date(item.fecha_fin).toLocaleDateString();
 
-    const tdCreated_at = document.createElement('td');
-tdCreated_at.textContent = new Date(item.created_at).toLocaleString();
-
-
-    const tdUpdated_at = document.createElement('td');
-    tdUpdated_at.textContent = new Date(item.updated_at).toLocaleString();
-
-
     const modificarBtn = document.createElement('button');
     modificarBtn.textContent = 'Modificar';
     modificarBtn.addEventListener('click', () => {
@@ -115,8 +107,6 @@ tdCreated_at.textContent = new Date(item.created_at).toLocaleString();
         form['nombre'].value = item.nombre;
         form['fechaIni'].value = item.fecha_inicio;
         form['fechaFin'].value = item.fecha_fin;
-        form['created'].value = item.created_at.slice(0, 16);
-        form['updated'].value = item.updated_at.slice(0, 16);
     });
 
     const eliminarBtn = document.createElement('button');
@@ -134,8 +124,6 @@ tdCreated_at.textContent = new Date(item.created_at).toLocaleString();
     tr.appendChild(tdNombre);
     tr.appendChild(tdFechaini);
     tr.appendChild(tdFechaFin);
-    tr.appendChild(tdCreated_at);
-    tr.appendChild(tdUpdated_at);
     tr.appendChild(tdBotones);
     return tr;
 }
@@ -250,7 +238,8 @@ form.addEventListener('submit', (ev) => {
     
 //     const fechaCreacion = new Date(form['created'].value);
 //     const fechaActualizacion = new Date(form['updated'].value);
-    
+
+
 //     if (isNaN(fechaCreacion.getTime()) || isNaN(fechaActualizacion.getTime())) {
 //         alert("Fechas de creación/actualización no válidas");
 //         return false;

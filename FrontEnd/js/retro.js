@@ -103,12 +103,6 @@ const generarFila = (item) => {
     const tdFechaRevision = document.createElement("td");
     tdFechaRevision.textContent = new Date(item.fecha_revision).toLocaleDateString();
 
-    const tdCreated = document.createElement("td");
-    tdCreated.textContent = new Date(item.created_at).toLocaleString();
-
-    const tdUpdated = document.createElement("td");
-    tdUpdated.textContent = new Date(item.updated_at).toLocaleString();
-
     const modificarBtn = document.createElement("button");
     modificarBtn.textContent = "Modificar";
     modificarBtn.addEventListener("click", () => {
@@ -122,8 +116,6 @@ const generarFila = (item) => {
         form['descripcion'].value = item.descripcion;
         form['cumplida'].checked = item.cumplida;
         form['fecha_revision'].value = item.fecha_revision;
-        form['created'].value = item.created_at.slice(0, 16);
-        form['updated'].value = item.updated_at.slice(0, 16);
 
         manejarCambioCategoria();
     });
@@ -170,8 +162,6 @@ if (item.categoria === "accion" && !item.cumplida) {
     tr.appendChild(tdDescripcion);
     tr.appendChild(tdCumplida);
     tr.appendChild(tdFechaRevision);
-    tr.appendChild(tdCreated);
-    tr.appendChild(tdUpdated);
     tr.appendChild(tdBotones);
 
     return tr;
@@ -195,9 +185,7 @@ const registrarRetro = async () => {
         categoria,
         descripcion: form['descripcion'].value,
         cumplida,
-        fecha_revision: form['fecha_revision'].value,
-        created_at: form['created'].value,
-        updated_at: form['updated'].value
+        fecha_revision: form['fecha_revision'].value
     };
 
     const res = await RetroServicios.saveNewRetro(retro);
@@ -211,9 +199,7 @@ const modificarRetro = async () => {
         categoria: categoriaSelect.value,
         descripcion: form['descripcion'].value,
         cumplida: form['cumplida'].value,
-        fecha_revision: form['fecha_revision'].value,
-        created_at: form['created'].value,
-        updated_at: form['updated'].value
+        fecha_revision: form['fecha_revision'].value
     };
 
     const id = form['id'].value;
@@ -286,9 +272,9 @@ cancelarBtn.addEventListener("click", () => {
 
 form.addEventListener("submit", (ev) => {
     ev.preventDefault();
-    if(!validarFormulario()){
-        return;
-    }
+    // if(!validarFormulario()){
+    //     return;
+    // }
     if (operacion === "crear") {
         registrarRetro();
     } else if (operacion === "modificar") {
@@ -300,61 +286,61 @@ cargarSprints();
 cargarTabla();
 
 
-const validarFormulario = () => {
+// const validarFormulario = () => {
 
-    if (!sprintSelect.value) {
-        alert("Debe seleccionar un sprint");
-        sprintSelect.focus();
-        return false;
-    }
+//     if (!sprintSelect.value) {
+//         alert("Debe seleccionar un sprint");
+//         sprintSelect.focus();
+//         return false;
+//     }
     
-    if (!categoriaSelect.value) {
-        alert("Debe seleccionar una categoría");
-        categoriaSelect.focus();
-        return false;
-    }
+//     if (!categoriaSelect.value) {
+//         alert("Debe seleccionar una categoría");
+//         categoriaSelect.focus();
+//         return false;
+//     }
     
-    const descripcion = form['descripcion'].value.trim();
-    if (!descripcion) {
-        alert("La descripción es obligatoria");
-        form['descripcion'].focus();
-        return false;
-    }
+//     const descripcion = form['descripcion'].value.trim();
+//     if (!descripcion) {
+//         alert("La descripción es obligatoria");
+//         form['descripcion'].focus();
+//         return false;
+//     }
     
-    if (descripcion.length < 5 || descripcion.length > 500) {
-        alert("La descripción debe tener entre 5 y 500 caracteres");
-        form['descripcion'].focus();
-        return false;
-    }
+//     if (descripcion.length < 5 || descripcion.length > 500) {
+//         alert("La descripción debe tener entre 5 y 500 caracteres");
+//         form['descripcion'].focus();
+//         return false;
+//     }
     
-    const fechaRevision = new Date(form['fecha_revision'].value);
-    const fechaActual = new Date();
+//     const fechaRevision = new Date(form['fecha_revision'].value);
+//     const fechaActual = new Date();
     
-    if (isNaN(fechaRevision.getTime())) {
-        alert("Fecha de revisión no válida");
-        form['fecha_revision'].focus();
-        return false;
-    }
+//     if (isNaN(fechaRevision.getTime())) {
+//         alert("Fecha de revisión no válida");
+//         form['fecha_revision'].focus();
+//         return false;
+//     }
     
-    if (categoriaSelect.value === "accion" && fechaRevision < fechaActual) {
-        alert("Para acciones, la fecha de revisión debe ser futura");
-        form['fecha_revision'].focus();
-        return false;
-    }
+//     if (categoriaSelect.value === "accion" && fechaRevision < fechaActual) {
+//         alert("Para acciones, la fecha de revisión debe ser futura");
+//         form['fecha_revision'].focus();
+//         return false;
+//     }
     
-    const fechaCreacion = new Date(form['created'].value);
-    const fechaActualizacion = new Date(form['updated'].value);
+//     const fechaCreacion = new Date(form['created'].value);
+//     const fechaActualizacion = new Date(form['updated'].value);
     
-    if (isNaN(fechaCreacion.getTime()) || isNaN(fechaActualizacion.getTime())) {
-        alert("Fechas de creación/actualización no válidas");
-        return false;
-    }
+//     if (isNaN(fechaCreacion.getTime()) || isNaN(fechaActualizacion.getTime())) {
+//         alert("Fechas de creación/actualización no válidas");
+//         return false;
+//     }
     
-    if (fechaActualizacion < fechaCreacion) {
-        alert("La fecha de actualización no puede ser anterior a la de creación");
-        form['updated'].focus();
-        return false;
-    }
+//     if (fechaActualizacion < fechaCreacion) {
+//         alert("La fecha de actualización no puede ser anterior a la de creación");
+//         form['updated'].focus();
+//         return false;
+//     }
     
-    return true;
-};
+//     return true;
+// };
