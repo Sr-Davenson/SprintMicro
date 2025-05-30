@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Retro;
+use App\Models\Sprint;
 use Illuminate\Http\Request;
 
 class RetroController extends Controller
@@ -28,7 +29,7 @@ class RetroController extends Controller
         $newRetro->categoria = $data['categoria'];
         $newRetro->descripcion = $data['descripcion'];
         $newRetro->cumplida = $data['cumplida'];
-        $newRetro->fecha_revision = $data['fecha_revision'];
+        $newRetro->fecha_revision = isset($data['fecha_revision'])?$data['fecha_revision']: null;
         $newRetro->created_at = now()->setTimezone('America/Bogota');
         $newRetro->updated_at = now()->setTimezone('America/Bogota');
         $newRetro->save();
@@ -52,9 +53,12 @@ class RetroController extends Controller
     $data = $request->all();
     $retro = Retro::find($id);
 
-    if (empty($retro)) {
-        return response()->json(['data' => 'No hay informacion sobre la retro'], 404);
+    if (!$retro) {
+        return response()->json(['data' => 'No hay información sobre la retro'], 404);
     }
+
+
+    $sprint = Sprint::find($data['sprint_id']);
 
     $retro->sprint_id = $data['sprint_id'];
     $retro->categoria = $data['categoria'];
@@ -64,6 +68,9 @@ class RetroController extends Controller
     $retro->updated_at = now()->setTimezone('America/Bogota');
 
     $retro->save();
+
+    $sprint->updated_at = now()->setTimezone('America/Bogota');
+    $sprint->save();
 
     return response()->json(["data" => "Retro actualizada"], 200);
 }

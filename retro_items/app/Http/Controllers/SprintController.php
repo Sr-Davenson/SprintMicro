@@ -29,8 +29,6 @@ class SprintController extends Controller
         $newSprint->fecha_fin = $data['fecha_fin'];
         $newSprint->created_at = now()->setTimezone('America/Bogota');
         $newSprint->updated_at = now()->setTimezone('America/Bogota');
-        // $newSprint->created_at = $data['created_at'];
-        // $newSprint->updated_at = $data['updated_at'];
         $newSprint->save();
         return response()->json(["data" => "Sprint Creado"], 201);
     }
