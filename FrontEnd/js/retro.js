@@ -25,9 +25,17 @@ class RetroServicios {
     static async saveNewRetro(retro) {
         try {
             const resp = await fetch("http://127.0.0.1:8000/api/retro", {
-                method: "post",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(retro)
+                 method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sprint_id: retro.sprint_id,
+                    categoria: retro.categoria,
+                    descripcion: retro.descripcion,
+                    cumplida: retro.cumplida,
+                    fecha_revision: retro.fecha_revision
+                })
             });
             const bodyResp = await resp.json();
             return bodyResp.data == "Retro Creada";
@@ -42,7 +50,13 @@ class RetroServicios {
             const resp = await fetch(`http://127.0.0.1:8000/api/retro/${id}`, {
                 method: "put",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(retro)
+                body: JSON.stringify({
+                    sprint_id: retro.sprint_id,
+                    categoria: retro.categoria,
+                    descripcion: retro.descripcion,
+                    cumplida: retro.cumplida,
+                    fecha_revision: retro.fecha_revision
+                })
             });
             const bodyResp = await resp.json();
             return bodyResp.data == "Retrospectiva actualizada";
@@ -101,7 +115,11 @@ const generarFila = (item) => {
     tdCumplida.textContent = item.cumplida ? "Sí" : "No";
 
     const tdFechaRevision = document.createElement("td");
-    tdFechaRevision.textContent = new Date(item.fecha_revision).toLocaleDateString();
+    if (item.fecha_revision) {
+        tdFechaRevision.textContent = new Date(item.fecha_revision).toLocaleDateString();
+    } else {
+        tdFechaRevision.textContent = "";
+    }
 
     const modificarBtn = document.createElement("button");
     modificarBtn.textContent = "Modificar";
@@ -115,7 +133,7 @@ const generarFila = (item) => {
         categoriaSelect.value = item.categoria;
         form['descripcion'].value = item.descripcion;
         form['cumplida'].checked = item.cumplida;
-        form['fecha_revision'].value = item.fecha_revision;
+        form['fecha_revision'].value = item.fecha_revision || "";
 
         manejarCambioCategoria();
     });
@@ -127,33 +145,6 @@ const generarFila = (item) => {
     const tdBotones = document.createElement("td");
     tdBotones.appendChild(modificarBtn);
     tdBotones.appendChild(eliminarBtn);
-    
-if (item.categoria === "accion" && !item.cumplida) {
-    const evaluarBtn = document.createElement("button");
-    evaluarBtn.textContent = "Evaluar";
-
-    evaluarBtn.addEventListener("click", async () => {
-        const confirmar = confirm("¿La acción fue cumplida?\n\nAceptar = Sí\nCancelar = No, pasar al siguiente sprint");
-        if (confirmar) {
-            item.cumplida = true;
-            const res = await RetroServicios.updateRetro(item.id, item);
-            if (res) cargarTabla();
-        } else {
-            const sprintIds = Object.keys(sprintsMap).map(Number).sort((a, b) => a - b);
-            const index = sprintIds.indexOf(Number(item.sprint_id));
-            if (index !== -1 && index + 1 < sprintIds.length) {
-                item.sprint_id = sprintIds[index + 1];
-                const res = await RetroServicios.updateRetro(item.id, item);
-                if (res) cargarTabla();
-            } else {
-                alert("No hay un siguiente sprint disponible para mover esta acción.");
-            }
-        }
-    });
-
-    tdBotones.appendChild(evaluarBtn);
-}
-
 
     const tr = document.createElement("tr");
     tr.appendChild(tdId);
@@ -162,6 +153,7 @@ if (item.categoria === "accion" && !item.cumplida) {
     tr.appendChild(tdDescripcion);
     tr.appendChild(tdCumplida);
     tr.appendChild(tdFechaRevision);
+
     tr.appendChild(tdBotones);
 
     return tr;
@@ -171,14 +163,6 @@ const registrarRetro = async () => {
     let sprintId = sprintSelect.value;
     const categoria = categoriaSelect.value;
     const cumplida = form['cumplida'].checked;
-
-    if (categoria === "accion" && !cumplida) {
-        const sprintIds = Object.keys(sprintsMap).map(Number).sort((a, b) => a - b);
-        const index = sprintIds.indexOf(Number(sprintId));
-        if (index !== -1 && index + 1 < sprintIds.length) {
-            sprintId = sprintIds[index + 1];  
-        }
-    }
 
     const retro = {
         sprint_id: sprintId,
@@ -198,7 +182,7 @@ const modificarRetro = async () => {
         sprint_id: sprintSelect.value,
         categoria: categoriaSelect.value,
         descripcion: form['descripcion'].value,
-        cumplida: form['cumplida'].value,
+        cumplida,
         fecha_revision: form['fecha_revision'].value
     };
 
@@ -224,7 +208,6 @@ const cargarSprints = async () => {
             option.value = sprint.id;
             option.textContent = sprint.nombre;
             sprintSelect.appendChild(option);
-
             sprintsMap[sprint.id] = sprint.nombre;
         });
     } catch (error) {
@@ -245,15 +228,36 @@ const cargarCategorias = () => {
 };
 
 
-
 const manejarCambioCategoria = () => {
-    if (categoriaSelect.value !== "accion") {
-        form['cumplida'].checked = false;       
-        form['cumplida'].disabled = true;        
+    const fechaRevisionField = form['fecha_revision'];
+    const fechaRevisionLabel = document.getElementById("fechaRevisionLabel");
+    const cumplidaField = form['cumplida'];
+    const cumplidaLabel = document.getElementById("cumplidaLabel");
+
+    if (categoriaSelect.value === "accion") {
+        fechaRevisionField.disabled = false;
+        fechaRevisionField.style.display = "block";
+        fechaRevisionLabel.style.display = "block";
+
+        cumplidaLabel.style.display = "block";
+        cumplidaField.style.display = "block";
     } else {
-        form['cumplida'].disabled = false;     
+
+        fechaRevisionField.value = "";
+        fechaRevisionField.disabled = true;
+        fechaRevisionField.style.display = "none";
+        fechaRevisionLabel.style.display = "none";
+
+        cumplidaLabel.style.display = "none";
+        cumplidaField.style.display = "none";
     }
 };
+
+// Evento de cambio en la categoría
+categoriaSelect.addEventListener('change', manejarCambioCategoria);
+
+// Agregar el evento al cambio de selección
+categoriaSelect.addEventListener('change', manejarCambioCategoria);
 
 categoriaSelect.addEventListener('change', manejarCambioCategoria);
 

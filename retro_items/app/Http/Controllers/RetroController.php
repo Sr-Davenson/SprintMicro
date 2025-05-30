@@ -29,7 +29,7 @@ class RetroController extends Controller
         $newRetro->categoria = $data['categoria'];
         $newRetro->descripcion = $data['descripcion'];
         $newRetro->cumplida = $data['cumplida'];
-        $newRetro->fecha_revision = $data['fecha_revision'];
+        $newRetro->fecha_revision = isset($data['fecha_revision'])?$data['fecha_revision']: null;
         $newRetro->created_at = now()->setTimezone('America/Bogota');
         $newRetro->updated_at = now()->setTimezone('America/Bogota');
         $newRetro->save();
