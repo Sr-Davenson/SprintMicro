@@ -47,7 +47,8 @@
 
         static async updateRetro(id, retro) {
             try {
-                const resp = await fetch(`http://127.0.0.1:8000/api/retro/${id}`, {
+                const resp = await fetch(`http://127.0.0.1:8000/api/retro/${id}`, 
+                    {
                     method: "put",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -258,12 +259,6 @@
         }
     };
 
-    // Evento de cambio en la categoría
-    categoriaSelect.addEventListener('change', manejarCambioCategoria);
-
-    // Agregar el evento al cambio de selección
-    categoriaSelect.addEventListener('change', manejarCambioCategoria);
-
     categoriaSelect.addEventListener('change', manejarCambioCategoria);
 
     registrarBtn.addEventListener("click", () => {
@@ -290,5 +285,3 @@
     });
     cargarSprints();
     cargarTabla();
-
-//tkm 

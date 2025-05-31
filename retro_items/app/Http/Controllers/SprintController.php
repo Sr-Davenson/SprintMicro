@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class SprintController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $rows = Sprint::all();
@@ -17,9 +15,6 @@ class SprintController extends Controller
             ->json(["data" => $rows], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $data = $request->all();
@@ -33,17 +28,11 @@ class SprintController extends Controller
         return response()->json(["data" => "Sprint Creado"], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $data = $request->all();
@@ -59,9 +48,6 @@ class SprintController extends Controller
         return response()->json(["data" => "Sprint actualizada"], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $sprint = Sprint::find($id);

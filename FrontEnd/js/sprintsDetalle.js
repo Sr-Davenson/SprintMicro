@@ -1,9 +1,7 @@
-// Elementos del DOM
 const sprintsTable = document.getElementById('sprintsTable');
 const retrospectivasTable = document.getElementById('retrospectivasTable');
 const sprintsMap = {};
 
-// Servicios para llamadas API
 class Servicios {
     static async getAllSprints() {
         try {
@@ -28,7 +26,6 @@ class Servicios {
     }
 }
 
-// Cargar tabla de sprints
 const cargarTablaSprints = async () => {
     try {
         const data = await Servicios.getAllSprints();
@@ -43,7 +40,6 @@ const cargarTablaSprints = async () => {
         data.data.forEach(sprint => {
             const tr = document.createElement('tr');
             
-            // Guardar nombre del sprint para referencia
             sprintsMap[sprint.id] = sprint.nombre;
             
             tr.innerHTML = `
@@ -57,7 +53,6 @@ const cargarTablaSprints = async () => {
             tbody.appendChild(tr);
         });
 
-        // Agregar event listeners a los botones
         document.querySelectorAll('.btn-ver').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const sprintId = e.target.getAttribute('data-sprint-id');
@@ -70,7 +65,6 @@ const cargarTablaSprints = async () => {
     }
 };
 
-// Mostrar retrospectivas para un sprint específico
 const mostrarRetrospectivas = async (sprintId) => {
     try {
         const data = await Servicios.getRetrospectivasBySprint(sprintId);
@@ -82,7 +76,6 @@ const mostrarRetrospectivas = async (sprintId) => {
         const tbody = retrospectivasTable.querySelector('tbody') || retrospectivasTable.createTBody();
         tbody.innerHTML = '';
 
-        // Mostrar retrospectivas actuales
         if (data.retros_actuales && data.retros_actuales.length > 0) {
             data.retros_actuales.forEach(retro => {
                 tbody.appendChild(crearFilaRetrospectiva(retro));
@@ -91,7 +84,6 @@ const mostrarRetrospectivas = async (sprintId) => {
             tbody.innerHTML = '<tr><td colspan="6">No hay retrospectivas para este sprint</td></tr>';
         }
 
-        // Mostrar acciones no cumplidas del sprint anterior
         if (data.acciones_no_cumplidas_Sprint_anterior && data.acciones_no_cumplidas_Sprint_anterior.length > 0) {
             const headerRow = document.createElement('tr');
             headerRow.innerHTML = `
@@ -106,7 +98,6 @@ const mostrarRetrospectivas = async (sprintId) => {
             });
         }
 
-        // Mostrar la tabla
         retrospectivasTable.style.display = 'table';
 
     } catch (error) {
@@ -114,7 +105,6 @@ const mostrarRetrospectivas = async (sprintId) => {
     }
 };
 
-// Crear fila de retrospectiva (función modificada)
 const crearFilaRetrospectiva = (retro, isPending = false) => {
     const tr = document.createElement('tr');
     if (isPending) tr.classList.add('fila-pendiente');
@@ -127,7 +117,6 @@ const crearFilaRetrospectiva = (retro, isPending = false) => {
         "otro": "Otro"
     };
 
-    // Determinar el texto de cumplimiento
     let cumplimientoTexto = '';
     if (retro.categoria === 'accion') {
         cumplimientoTexto = retro.cumplida ? ' Si' : 'No';
@@ -145,19 +134,15 @@ const crearFilaRetrospectiva = (retro, isPending = false) => {
     return tr;
 };
 
-// Formatear fecha
+
 const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return date.toLocaleDateString('es-ES');
 };
 
-// Inicializar
 document.addEventListener('DOMContentLoaded', () => {
-    // Crear tbody si no existen
     if (!sprintsTable.querySelector('tbody')) sprintsTable.createTBody();
     if (!retrospectivasTable.querySelector('tbody')) retrospectivasTable.createTBody();
-    
-    // Cargar datos iniciales
     cargarTablaSprints();
 });

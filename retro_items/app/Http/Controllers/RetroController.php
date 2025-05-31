@@ -10,9 +10,6 @@ use function PHPUnit\Framework\isEmpty;
 
 class RetroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $rows = Retro::all();
@@ -20,9 +17,6 @@ class RetroController extends Controller
             ->json(["data" => $rows], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $data = $request->all();
@@ -42,10 +36,6 @@ class RetroController extends Controller
         $sprint->save();
         return response()->json(["data" => "Retro Creada"], 201);
     }
-
-    /**
-     * Display the specified resource.
-     */
 
 public function show(string $sprint_id)
 {
@@ -72,9 +62,6 @@ public function show(string $sprint_id)
         "acciones_no_cumplidas_Sprint_anterior" => $accionesNoCumplidas
     ], 200);
 }
-    /**
-     * Update the specified resource in storage.
-     */
 
     public function update(Request $request, string $id)
     {
@@ -103,10 +90,6 @@ public function show(string $sprint_id)
         return response()->json(["data" => "Retro actualizada"], 200);
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $retro = Retro::find($id);
