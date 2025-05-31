@@ -148,8 +148,6 @@
         eliminarBtn.addEventListener("click", () => eliminarRetro(item.id));
 
         const tdBotones = document.createElement("td");
-        //Revisa el botón de verDetalleBtn si está bien
-        tdBotones.appendChild(verDetalleBtn)
         tdBotones.appendChild(modificarBtn);
         tdBotones.appendChild(eliminarBtn);
 
@@ -292,43 +290,5 @@
     });
     cargarSprints();
     cargarTabla();
-
-    //Revisa desde acá
-
-    const mostrarAccionesSprintAnterior = async (sprintId) => {
-    try {
-        const resp = await fetch('http://127.0.0.1:8000/api/retro/acciones-anteriores/${sprintId}');
-        const data = await resp.json();
-
-        const tbody = document.getElementById('bodyAccionesAnteriores');
-        tbody.innerHTML = '';
-
-        if (!data.data || data.data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="3">No hay acciones del sprint anterior</td></tr>';
-            return;
-        }
-
-        for (let accion of data.data) {
-            const tr = document.createElement('tr');
-
-            const tdDescripcion = document.createElement('td');
-            tdDescripcion.textContent = accion.descripcion;
-
-            const tdCumplida = document.createElement('td');
-            tdCumplida.textContent = accion.cumplida ? 'Sí' : 'No';
-
-            const tdFecha = document.createElement('td');
-            tdFecha.textContent = new Date(accion.fecha_revision).toLocaleDateString();
-
-            tr.appendChild(tdDescripcion);
-            tr.appendChild(tdCumplida);
-            tr.appendChild(tdFecha);
-
-            tbody.appendChild(tr);
-        }
-    } catch (error) {
-        console.error('Error al cargar acciones del sprint anterior:', error);
-    }
-};
 
 //tkm 
