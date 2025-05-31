@@ -208,7 +208,6 @@ a:hover {
     margin-top: 5px;
 }
 
-/* Estilo para campos con error */
 input.error, select.error, textarea.error {
     border-color: #ff4444 !important;
 }
