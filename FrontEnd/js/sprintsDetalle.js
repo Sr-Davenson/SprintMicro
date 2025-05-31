@@ -88,7 +88,7 @@ const mostrarRetrospectivas = async (sprintId) => {
             const headerRow = document.createElement('tr');
             headerRow.innerHTML = `
                 <td colspan="6">
-                    Acciones pendientes del Sprint Anterior (${data.sprint_anterior})
+                    Acciones pendientes del Sprint Anterior
                 </td>
             `;
             tbody.appendChild(headerRow);

@@ -94,6 +94,42 @@ th {
     background-color: #27ae60;
 }
 
+#sprintsTable, #retrospectivasTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    
+}
+
+#sprintsTable th,
+#sprintsTable td,
+#retrospectivasTable th,
+#retrospectivasTable td {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+#sprintsTable th,
+#retrospectivasTable th {
+    background-color: rgba(0, 123, 255, 0.3);
+    font-weight: bold;
+}
+
+#sprintsTable tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+#sprintsTable tr:hover 
+#retrospectivasTable tr:hover{
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 #retrospectivasTable {
     margin-top: 30px;
     display: none;
@@ -103,7 +139,8 @@ th {
    
     font-weight: bold;
     text-align: center;
-    color: #e74c3c;
+    color: #ffffff;
+    background-color: #3498db;
 }
 
 td:nth-child(5) { 
