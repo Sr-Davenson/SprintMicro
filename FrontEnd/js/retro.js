@@ -285,3 +285,152 @@
     });
     cargarSprints();
     cargarTabla();
+
+    const mostrarError = (elemento, mensaje) => {
+        const errorAnterior = elemento.parentNode.querySelector('.error-mensaje');
+        if (errorAnterior) {
+            errorAnterior.remove();
+        }
+
+        if (!mensaje) return;
+
+        const errorElement = document.createElement('div');
+        errorElement.className = 'error-mensaje';
+        errorElement.textContent = mensaje;
+        errorElement.style.color = 'red';
+        errorElement.style.fontSize = '0.8em';
+        errorElement.style.marginTop = '5px';
+
+        elemento.parentNode.insertBefore(errorElement, elemento.nextSibling);
+
+        elemento.style.borderColor = 'red';
+
+        setTimeout(() => {
+            elemento.style.borderColor = '';
+        }, 3000);
+    };
+
+    const validarFormulario = () => {
+        let valido = true;
+
+        if (!sprintSelect.value) {
+            mostrarError(sprintSelect, 'Por favor selecciona un sprint');
+            valido = false;
+        } else {
+            mostrarError(sprintSelect, '');
+        }
+
+        if (!categoriaSelect.value) {
+            mostrarError(categoriaSelect, 'Por favor selecciona una categoría');
+            valido = false;
+        } else {
+            mostrarError(categoriaSelect, '');
+        }
+
+        const descripcion = form['descripcion'].value.trim();
+        if (!descripcion) {
+            mostrarError(form['descripcion'], 'La descripción no puede estar vacía');
+            valido = false;
+        } else if (descripcion.length > 500) {
+            mostrarError(form['descripcion'], 'La descripción no puede exceder los 500 caracteres');
+            valido = false;
+        } else {
+            mostrarError(form['descripcion'], '');
+        }
+
+        if (categoriaSelect.value === "accion") {
+
+            const fechaRevision = form['fecha_revision'].value;
+            if (!fechaRevision) {
+                mostrarError(form['fecha_revision'], 'Para acciones debe especificar una fecha de revisión');
+                valido = false;
+            } else {
+
+                const fechaActual = new Date();
+                fechaActual.setHours(0, 0, 0, 0);
+                const fechaIngresada = new Date(fechaRevision);
+                
+                if (fechaIngresada < fechaActual) {
+                    mostrarError(form['fecha_revision'], 'La fecha de revisión no puede ser en el pasado');
+                    valido = false;
+                } else {
+                    mostrarError(form['fecha_revision'], '');
+                }
+            }
+        } else {
+            mostrarError(form['fecha_revision'], '');
+        }
+
+        return valido;
+    };
+
+    form.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        
+        if (!validarFormulario()) {
+            return;
+        }
+        
+        if (operacion === "crear") {
+            registrarRetro();
+        } else if (operacion === "modificar") {
+            modificarRetro();
+        }
+        formContent.classList.add("ocultarForm");
+    });
+
+    //
+    form['descripcion'].addEventListener('input', () => {
+        const descripcion = form['descripcion'].value;
+        const contador = document.getElementById('contadorDescripcion');
+        
+        if (!contador) {
+            const nuevoContador = document.createElement('div');
+            nuevoContador.id = 'contadorDescripcion';
+            nuevoContador.style.fontSize = '0.8em';
+            nuevoContador.style.color = '#ffff';
+            form['descripcion'].parentNode.appendChild(nuevoContador);
+        }
+        
+        if (descripcion.length > 500) {
+            form['descripcion'].value = descripcion.substring(0, 500);
+            mostrarError(form['descripcion'], 'La descripción no puede exceder los 500 caracteres');
+        } else {
+            mostrarError(form['descripcion'], '');
+        }
+        
+        document.getElementById('contadorDescripcion').textContent = 
+            `${form['descripcion'].value.length}/500 caracteres`;
+    });
+
+    form['fecha_revision'].addEventListener('change', () => {
+        if (categoriaSelect.value === "accion") {
+            const fechaActual = new Date();
+            fechaActual.setHours(0, 0, 0, 0);
+            const fechaIngresada = new Date(form['fecha_revision'].value);
+            
+            if (fechaIngresada < fechaActual) {
+                mostrarError(form['fecha_revision'], 'La fecha de revisión no puede ser en el pasado');
+                form['fecha_revision'].value = '';
+            } else {
+                mostrarError(form['fecha_revision'], '');
+            }
+        }
+    });
+
+    sprintSelect.addEventListener('change', () => {
+        if (!sprintSelect.value) {
+            mostrarError(sprintSelect, 'Por favor selecciona un sprint');
+        } else {
+            mostrarError(sprintSelect, '');
+        }
+    });
+
+    categoriaSelect.addEventListener('change', () => {
+        if (!categoriaSelect.value) {
+            mostrarError(categoriaSelect, 'Por favor selecciona una categoría');
+        } else {
+            mostrarError(categoriaSelect, '');
+        }
+        manejarCambioCategoria();
+    });

@@ -202,3 +202,14 @@ a:hover {
     gap: 5px;
 }
 
+.error-mensaje {
+    color: #ff4444;
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+/* Estilo para campos con error */
+input.error, select.error, textarea.error {
+    border-color: #ff4444 !important;
+}
+
